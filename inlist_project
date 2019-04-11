@@ -1,0 +1,322 @@
+
+
+&star_job
+
+      create_pre_main_sequence_model = .true.  
+
+      !change_initial_v_flag = .true.
+      !change_v_flag = .false.
+      !new_v_flag = .true.
+      center_ye_limit_for_v_flag = 0.47
+
+      logT_for_conv_vel_flag = 8.5d0
+
+      eos_file_prefix = 'mesa'
+      kappa_file_prefix = 'gs98'
+      
+      !pgstar_flag = .true.
+
+	change_net=.true.
+	new_net_name='approx21.net'
+
+
+      extras_lipar = 2
+      extras_lrpar = 3
+
+      !When to change convergence values
+      extras_ipar(1) = 4
+
+      !0 Never
+      !1 He_core_mass>0
+      !2 c_core_mass>0
+      !3 o_core_mass >0
+      !4 si_core_mass>0
+      !5 fe_core_mass>0
+
+      !Set new convergence values
+      !extras_rpar(1) dX_nuc_drop_limit = 5d-2
+      !extras_rpar(2) dX_nuc_drop_limit_at_high_T = 5d-3
+      !extras_rpar(3) dX_nuc_drop_min_X_limit = 5d-2
+      extras_rpar(1) = 5d-2
+      extras_rpar(2) = 5d-3
+      extras_rpar(3) = 5d-2
+
+      !When to turn off thermohaline (same flags as convergence)
+      extras_ipar(2) = 4
+
+
+	pgstar_flag=.true.
+
+	dump_missing_metals_into_heaviest = .false.
+
+/ ! end of star_job namelist
+
+
+&controls
+
+	initial_mass=20.0
+
+	screening_mode = 'chugunov'
+
+
+      use_eosDT2 = .true.
+      use_eosELM = .true.
+
+
+      use_dedt_form_of_energy_eqn = .true.
+      ignore_too_large_correction = .true. ! for conv_vel's
+
+      !limit_for_rel_error_in_energy_conservation = 1d-4
+      !hard_limit_for_rel_error_in_energy_conservation = 1d-3
+	initial_z = 0.02
+      use_Type2_opacities = .true.
+      Zbase = 0.02
+
+! wind
+
+!        hot_wind_scheme = 'Vink'
+!        cool_wind_RGB_scheme = 'Reimers'
+!        cool_wind_AGB_scheme = 'Blocker'
+
+!	Reimers_scaling_factor = 0.5
+!	Blocker_scaling_factor = 0.1
+!	Vink_scaling_factor = 1.0	
+
+! resolution
+
+      mesh_delta_coeff = 0.5
+      max_dq = 0.001d0
+      max_allowed_nz = 40000
+
+      !overshoot_D2_below_burn_z = 1d10
+      !overshoot_f2_below_burn_z = 0.10
+
+
+! timestep 
+
+! use this through about the onset of core si burn
+       dX_nuc_drop_limit = 1d-3   
+       dX_nuc_drop_limit_at_high_T = 1d-4  
+       dX_nuc_drop_min_X_limit = 1d-3  
+       dX_nuc_drop_max_A_limit = 52   
+
+
+! use this beyond core si burn
+!       dX_nuc_drop_limit = 5d-2   
+!       dX_nuc_drop_limit_at_high_T = 5d-3  
+!       dX_nuc_drop_min_X_limit = 5d-2  
+!       dX_nuc_drop_max_A_limit = 52   
+
+
+
+      varcontrol_target = 1d-3  ! 1e-2
+      min_timestep_limit = 1d-12 ! (seconds)
+
+! burning
+      sig_min_factor_for_high_Tcenter = 1
+
+
+! soften convective boundaries
+!      limit_mixing_length_by_dist_to_bdy = 1
+!      conv_bdy_mix_softening_f  = 0.001
+!      conv_bdy_mix_softening_f0 = 0.003
+!      conv_bdy_mix_softening_min_D_mix = 1d-3
+
+
+! mlt
+         mixing_length_alpha = 1.5
+         MLT_option = 'Henyey'
+
+
+! mlt++
+         okay_to_reduce_gradT_excess = .true. 
+            gradT_excess_f1 = 1d-4
+            gradT_excess_f2 = 1d-2
+            gradT_excess_age_fraction = 0.9d0
+
+            gradT_excess_lambda1 = 1.0
+            gradT_excess_beta1 = 0.35
+            
+            gradT_excess_lambda2 = 0.5
+            gradT_excess_beta2 = 0.25
+            
+            gradT_excess_dlambda = 0.1
+            gradT_excess_dbeta = 0.1
+
+
+! eps grav
+
+include_dmu_dt_in_eps_grav = .true.
+
+
+! overshoot
+! nonburning regions
+         overshoot_f_above_nonburn_core = 0.004
+         overshoot_f0_above_nonburn_core = 0.001
+         overshoot_f_above_nonburn_shell = 0.004
+         overshoot_f0_above_nonburn_shell = 0.001
+         overshoot_f_below_nonburn_shell = 0.004
+         overshoot_f0_below_nonburn_shell = 0.001
+
+! h burning regions
+        overshoot_f_above_burn_h_core = 0.004
+         overshoot_f0_above_burn_h_core = 0.001
+         overshoot_f_above_burn_h_shell = 0.004
+         overshoot_f0_above_burn_h_shell = 0.001
+         overshoot_f_below_burn_h_shell = 0.004
+         overshoot_f0_below_burn_h_shell = 0.001
+
+! he burning regions
+         overshoot_f_above_burn_he_core = 0.004
+         overshoot_f0_above_burn_he_core = 0.001
+         overshoot_f_above_burn_he_shell = 0.004
+         overshoot_f0_above_burn_he_shell = 0.001
+         overshoot_f_below_burn_he_shell = 0.004
+         overshoot_f0_below_burn_he_shell = 0.001
+
+! metal burning regions
+         overshoot_f_above_burn_z_core = 0.004
+         overshoot_f0_above_burn_z_core = 0.001
+         overshoot_f_above_burn_z_shell = 0.004
+         overshoot_f0_above_burn_z_shell = 0.001
+         overshoot_f_below_burn_z_shell = 0.004
+         overshoot_f0_below_burn_z_shell = 0.001
+
+         D_mix_ov_limit = 1d2
+
+
+! semiconvection
+         use_Ledoux_criterion = .true.
+         alpha_semiconvection = 0.01
+
+
+! thermohaline
+      thermohaline_coeff = 2.0 
+      thermohaline_option = 'Kippenhahn'
+
+
+! angular momentum transport
+
+     delta_lg_XH_cntr_limit = 0.01d0
+     delta_lg_XH_cntr_max   = 0.0d0
+     delta_lg_XH_cntr_min   = -6.0d0
+     delta_lg_XH_cntr_hard_limit = 0.02d0
+
+     delta_lg_XHe_cntr_limit = 0.01d0
+     delta_lg_XHe_cntr_max   = 0.0d0
+     delta_lg_XHe_cntr_min   = -6.0d0
+     delta_lg_XHe_cntr_hard_limit = 0.02d0
+
+     delta_lg_XC_cntr_limit = 0.01d0
+     delta_lg_XC_cntr_max   = 0.0d0
+     delta_lg_XC_cntr_min   = -6.0d0
+     delta_lg_XC_cntr_hard_limit = 0.02d0
+
+     delta_lg_XNe_cntr_limit = 0.01d0
+     delta_lg_XNe_cntr_max   = 0.0d0
+     delta_lg_XNe_cntr_min   = -6.0d0
+     delta_lg_XNe_cntr_hard_limit = 0.02d0
+
+     delta_lg_XO_cntr_limit = 0.01d0
+     delta_lg_XO_cntr_max   = 0.0d0
+     delta_lg_XO_cntr_min   = -6.0d0
+     delta_lg_XO_cntr_hard_limit = 0.02d0
+
+     delta_lg_XSi_cntr_limit = 0.01d0
+     delta_lg_XSi_cntr_max   = 0.0d0
+     delta_lg_XSi_cntr_min   = -6.0d0
+     delta_lg_XSi_cntr_hard_limit = 0.02d0
+
+     ! this is mainly to resolve properly when the star goes off the main sequence
+     delta_HR_limit = 0.0025d0
+     delta_lgL_He_limit = 0.1
+
+
+      photo_interval = 10000
+      profile_interval =  100
+      history_interval = 1
+      terminal_interval = 1
+      write_header_frequency = 100
+      max_model_number = 400000
+
+      
+
+! FOR DEBUGGING
+
+      !report_hydro_solver_progress = .true. ! set true to see info about newton iterations
+      !report_ierr = .true. ! if true, produce terminal output when have some internal error
+      !hydro_show_correction_info = .true.
+      
+      !max_years_for_timestep = 3.67628942044319d-05
+
+      !report_why_dt_limits = .true.
+      !report_all_dt_limits = .true.
+      !report_hydro_dt_info = .true.
+      
+      !show_mesh_changes = .true.
+      !mesh_dump_call_number = 5189
+      !okay_to_remesh = .false.
+      
+      !trace_evolve = .true.
+            
+
+      ! hydro debugging
+      !hydro_check_everything = .true.
+      !hydro_inspectB_flag = .true.
+      !hydro_sizequ_flag = .true.
+      
+      !hydro_get_a_numerical_partial = -1
+      !hydro_test_partials_k = 1
+      
+      !hydro_numerical_jacobian = .true.
+      !hydro_save_numjac_plot_data = .true.
+      !hydro_dump_call_number = 4106
+      !hydro_dump_iter_number = 5
+      !hydro_epsder_struct = 1d-6
+      !hydro_epsder_chem = 1d-6
+
+      !trace_newton_bcyclic_solve_input = .true. ! input is "B" j k iter B(j,k)
+      !trace_newton_bcyclic_solve_output = .true. ! output is "X" j k iter X(j,k)
+
+      !trace_newton_bcyclic_matrix_input = .true.
+      !trace_newton_bcyclic_matrix_output = .true.
+      
+      !trace_newton_bcyclic_steplo = 1 ! 1st model number to trace
+      !trace_newton_bcyclic_stephi = 1 ! last model number to trace
+      
+      !trace_newton_bcyclic_iterlo = 2 ! 1st newton iter to trace
+      !trace_newton_bcyclic_iterhi = 2 ! last newton iter to trace
+      
+      !trace_newton_bcyclic_nzlo = 1 ! 1st cell to trace
+      !trace_newton_bcyclic_nzhi = 10000 ! last cell to trace; if < 0, then use nz as nzhi
+      
+      !trace_newton_bcyclic_jlo = 1 ! 1st var to trace
+      !trace_newton_bcyclic_jhi = 100 ! last var to trace; if < 0, then use nvar as jhi
+      
+      !trace_k = 0
+
+      !fill_arrays_with_NaNs = .true.
+      !stop_for_NaNs = .true.
+
+/ ! end of controls namelist
+
+
+
+&pgstar
+
+!pause = .true.
+
+Text_Summary1_name(2,2) = 'compactness'
+
+TRho_logRho_min = 0.0
+TRho_logT_min = 7.5
+
+!Grid2_file_flag = .true.
+Grid2_file_interval = 3 ! output when mod(model_number,Grid2_file_interval)==0
+
+! after start oxygen burn
+!TRho_logRho_min = 4
+!TRho_logT_min = 8.8
+!Profile_Panels3_xmax = 6 ! only used if /= -101d0
+
+/ ! end of pgstar namelist
