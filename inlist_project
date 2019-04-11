@@ -146,7 +146,7 @@
 
 ! eps grav
 
-include_dmu_dt_in_eps_grav = .true.
+         include_composition_in_eps_grav = .true.
 
 
 ! overshoot
