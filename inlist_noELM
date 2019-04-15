@@ -1,0 +1,11 @@
+&star_job
+
+/
+
+
+&controls
+
+    log_directory = 'r11554-noELM'
+    use_eosELM = .false.
+
+/
