@@ -1,0 +1,11 @@
+&star_job
+
+/
+
+
+&controls
+
+    check_elm_helm_agreement = .true.
+    log_directory = 'r11590'
+
+/
