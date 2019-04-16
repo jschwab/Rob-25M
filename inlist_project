@@ -54,6 +54,9 @@
 
 &controls
 
+     ! stopping condition
+     log_center_density_limit = 9d0
+
 	initial_mass=20.0
 
 	screening_mode = 'chugunov'
